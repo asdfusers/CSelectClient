@@ -77,6 +77,8 @@ void CPackets::clear()
 	dataField = (char*)(packetBuffer + 4);
 	readPosition = writePosition = dataField;
 	endOfDataField = &dataField[PACKETBUFFERSIZE - 1];
+	id(0);
+	receiveSize = 0;
 }
 
 void CPackets::WriteData(void * buffer, int size)
