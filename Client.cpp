@@ -65,7 +65,6 @@ bool CClient::onReceive()
 		receivedPacket.copyToBuffer(receiveBuffer, receivePacketSize);
 		if (receivedPacket.isValidPacket() == true && receivePacketSize >= (int)receivedPacket.getPacketSize())
 		{
-
 			packetParsing(receivedPacket);
 			char buffer[PACKETBUFFERSIZE];
 			receivePacketSize -= receivedPacket.getPacketSize();
@@ -111,24 +110,32 @@ void CClient::packetParsing(CPackets & packet)
 
 void CClient::onPTConnectionSuccessAck(CPackets & packet)
 {
-	CPackets sendPacket(P_TESTPACKET1_REQ);
+	{
+		wchar_t str[127] = { 0, };
+		packet >> str;
+		printf("%s", str);
+	}
+	{
 
-	sendPacket << "Test packet 1";
-	SendPacket(sendPacket);
+		CPackets sendPacket(P_TESTPACKET1_REQ);
+
+		sendPacket << L"Test packet 1";
+		SendPacket(sendPacket);
+	}
 }
 
 void CClient::onPTTestPacket1Ack(CPackets & packet)
 {
-	{
-		char str[127];
-		packet >> (LPTSTR)str;
+	{		
+		wchar_t str[127];
+		packet >> str;
 		printf("P_TESTPACKET1_ACK received : %s\n", str);
 	}
 
 	{
 		CPackets sendPacket(P_TESTPACKET2_REQ);
 
-		sendPacket << "Test packet 2";
+		sendPacket << L"Test packet 2";
 		SendPacket(sendPacket);
 	}
 }
@@ -136,16 +143,16 @@ void CClient::onPTTestPacket1Ack(CPackets & packet)
 void CClient::onPTTestPacket2Ack(CPackets & packet)
 {
 	{
-		char str[127];
+		wchar_t str[127];
 
-		packet >> (LPTSTR)str;
+		packet >> str;
 		printf("P_TESTPACKET2_ACK received : %s\n", str);
 	}
 
 	{
 		CPackets sendPacket(P_TESTPACKET3_REQ);
 
-		sendPacket << "Test packet 3";
+		sendPacket << L"Test packet 3";
 		SendPacket(sendPacket);
 	}
 }
@@ -153,17 +160,17 @@ void CClient::onPTTestPacket2Ack(CPackets & packet)
 void CClient::onPTTestPacket3Ack(CPackets & packet)
 {
 	{
-		char str[127];
+		wchar_t str[127];
 
-		packet >> (LPTSTR)str;
+		packet >> str;
 		printf("P_TESTPACKET1_ACK received : %s\n", str);
 	}
 
 	{
 		CPackets sendPacket(P_TESTPACKET1_REQ);
 
-		sendPacket << "Test packet 1";
-		SendPacket(sendPacket);
+		sendPacket << L"Test packet 1";
+	//	SendPacket(sendPacket);
 	}
 }
 

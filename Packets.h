@@ -37,7 +37,7 @@ public:
 	CPackets&	operator << (__int64 arg);
 	CPackets&	operator << (LPTSTR arg);
 	CPackets&	operator << (CPackets& arg);
-	
+
 	CPackets&	operator >> (bool& arg);
 	CPackets&	operator >> (int& arg);
 	CPackets&	operator >> (long& arg);
