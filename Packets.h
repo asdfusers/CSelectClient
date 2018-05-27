@@ -37,6 +37,7 @@ public:
 	CPackets&	operator << (__int64 arg);
 	CPackets&	operator << (LPTSTR arg);
 	CPackets&	operator << (CPackets& arg);
+	CPackets&	operator << (std::string arg);
 
 	CPackets&	operator >> (bool& arg);
 	CPackets&	operator >> (int& arg);
@@ -45,6 +46,7 @@ public:
 	CPackets&	operator >> (__int64& arg);
 	CPackets&	operator >> (LPTSTR arg);
 	CPackets&	operator >> (CPackets& arg);
+	CPackets&	operator >> (std::string& arg);
 
 protected:
 	typedef struct

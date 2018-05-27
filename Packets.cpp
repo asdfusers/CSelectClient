@@ -148,7 +148,7 @@ CPackets &CPackets::operator<<(LPTSTR arg)
 	pStr = new char[strSize];
 	WideCharToMultiByte(CP_ACP, 0, arg, -1, pStr, strSize, 0, 0);
 
- 	WriteData(pStr, lstrlen(arg) * sizeof(wchar_t) + sizeof(wchar_t));
+ 	WriteData(pStr, strSize);
 
 	return *this;
 }
@@ -163,6 +163,15 @@ CPackets & CPackets::operator<<(CPackets & arg)
 	WriteData(arg.dataField, size);
 
 	return *this;
+}
+
+CPackets & CPackets::operator<<(std::string arg)
+{
+	int length = arg.length();
+	WriteData(&arg, length);
+
+	return *this;
+
 }
 
 
@@ -225,6 +234,15 @@ CPackets & CPackets::operator >> (CPackets & arg)
 	arg.WriteData(buffer, size);
 
 	return *this;
+}
+
+CPackets & CPackets::operator >> (std::string & arg)
+{
+	int length = sizeof(arg);
+	ReadData(&arg, length);
+
+	return *this;
+
 }
 
 
