@@ -11,7 +11,6 @@
 #include <string>
 #include <stdio.h>
 #include <tchar.h>
-
-
+#include <list>
 
 // TODO: reference additional headers your program requires here

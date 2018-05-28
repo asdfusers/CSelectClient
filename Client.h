@@ -1,35 +1,30 @@
 #pragma once
 #include "stdafx.h"
-#include "Packets.h"
+#include "Packet.h"
+#include "SelectThread.h"
+
+
 class CClient
 {
 public:
 	CClient();
 	~CClient();
 
-	bool Init(std::string IP, int PORT);
+	bool Init(std::string IPs, int PORT);
 	bool Connect();
-	bool SendPacket(CPackets& packet);
-	bool onReceive();
-	void onClose();
-	void selectEvent();
-	void packetParsing(CPackets& packet);
+	void CopyMessageQue();
 
-	void	onPTConnectionSuccessAck(CPackets& packet);
-	void	onPTTestPacket1Ack(CPackets& packet);
-	void	onPTTestPacket2Ack(CPackets& packet);
-	void	onPTTestPacket3Ack(CPackets& packet);
+	CMessageQueue getQue() { return _MessageQue; }
 
 private:
+	CMessageQueue _MessageQue;
+	CSelectThread _SelectThread;
 	SOCKET mSocket;
 	SOCKADDR_IN addr;
 	int addrLen;
 	int retVal;
 
-	char receiveBuffer[PACKETBUFFERSIZE];
-	int receivePacketSize;
-
-	WSAEVENT recvEvent;
+	std::list<char*> messageQue;
 
 };
 

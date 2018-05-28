@@ -3,23 +3,26 @@
 
 #include "stdafx.h"
 #include "Client.h"
-
+#include "CriticalSections.h"
 int main()
 {
-	std::string asdf = "asdf";
-
-	CPackets packet;
-	packet << asdf;
 
 	CClient Client;
 	Client.Init("127.0.0.1", 9000);
 	Client.Connect();
-
+	CPacket packet;
 	while (1)
 	{
-		Client.selectEvent();
-		Sleep(5);
+		CriticalSections::getInstance()->enter();
+		Client.CopyMessageQue();
+		for (auto packet : Client.getQue().messageQue)
+		{
+			Client.getQue().packetParsing(packet);
+		}
+		Client.getQue().messageQue.clear();
+		CriticalSections::getInstance()->leave();
 	}
+
     return 0;
 }
 

@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Common">
-      <UniqueIdentifier>{38a3e9ba-b399-42b2-a6f5-d4da2dad0967}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -30,11 +27,11 @@
     <ClInclude Include="Client.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Packets.h">
-      <Filter>Common</Filter>
+    <ClInclude Include="SelectThread.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Protocol.h">
-      <Filter>Common</Filter>
+    <ClInclude Include="MessageQueue.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -47,8 +44,14 @@
     <ClCompile Include="Client.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Packets.cpp">
-      <Filter>Common</Filter>
+    <ClCompile Include="SelectThread.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MessageQueue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>
