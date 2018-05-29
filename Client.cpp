@@ -2,6 +2,7 @@
 #include "Client.h"
 #include "Protocol.h"
 #include "CriticalSections.h"
+#include "ThreadManager.h"
 #include <algorithm>
 
 using namespace std;
@@ -17,7 +18,7 @@ CClient::~CClient()
 	closesocket(mSocket);
 }
 
-bool CClient::Init(std::string IPs, int PORT)
+bool CClient::Init(std::string IP, int PORT)
 {
 	WSAData wsaData;
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
@@ -28,12 +29,13 @@ bool CClient::Init(std::string IPs, int PORT)
 
 	addr.sin_family = AF_INET;
 	addr.sin_port = htons(PORT);
-	addr.sin_addr.S_un.S_addr = inet_addr(IPs.c_str());
+	addr.sin_addr.S_un.S_addr = inet_addr(IP.c_str());
 
 	_SelectThread.setSocket(mSocket);
-	_SelectThread.begin();
-
 	_MessageQue.setSocket(mSocket);
+	
+
+	
 	return true;
 }
 
@@ -42,8 +44,11 @@ bool CClient::Init(std::string IPs, int PORT)
 bool CClient::Connect()
 {
 	addrLen = sizeof(addr);
-	if (connect(mSocket, (SOCKADDR*)&addr, addrLen) != 0)
-		return false;
+	retVal = connect(mSocket, (SOCKADDR*)&addr, addrLen);
+	if (retVal == INVALID_SOCKET)
+	{
+		cout << "Connect()" << endl;
+	}
 	else
 	{
 		std::cout << "연결 성공!!" << std::endl;

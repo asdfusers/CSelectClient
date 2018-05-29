@@ -10,15 +10,15 @@ public:
 	CClient();
 	~CClient();
 
-	bool Init(std::string IPs, int PORT);
+	bool Init(std::string IP, int PORT);
 	bool Connect();
 	void CopyMessageQue();
 
 	CMessageQueue getQue() { return _MessageQue; }
 
+	CSelectThread _SelectThread;
 private:
 	CMessageQueue _MessageQue;
-	CSelectThread _SelectThread;
 	SOCKET mSocket;
 	SOCKADDR_IN addr;
 	int addrLen;

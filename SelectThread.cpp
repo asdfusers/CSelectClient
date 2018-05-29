@@ -12,17 +12,20 @@ CSelectThread::~CSelectThread()
 }
 
 void CSelectThread::threadMain()
-{
-	WSANETWORKEVENTS netEvent;
+{	
+	while (1)
+	{
+		WSANETWORKEVENTS netEvent;
 
-	ZeroMemory(&netEvent, sizeof(netEvent));
-	WSAEventSelect(mSocket, recvEvent, FD_READ | FD_CLOSE);
-	WSAEnumNetworkEvents(mSocket, recvEvent, &netEvent);
+		ZeroMemory(&netEvent, sizeof(netEvent));
+		WSAEventSelect(mSocket, recvEvent, FD_READ | FD_CLOSE);
+		WSAEnumNetworkEvents(mSocket, recvEvent, &netEvent);
 
-	if ((netEvent.lNetworkEvents & FD_READ) == FD_READ)
-		onReceive();
-	else if ((netEvent.lNetworkEvents & FD_CLOSE) == FD_CLOSE)
-		onClose();
+		if ((netEvent.lNetworkEvents & FD_READ) == FD_READ)
+			onReceive();
+		else if ((netEvent.lNetworkEvents & FD_CLOSE) == FD_CLOSE)
+			onClose();
+	}
 }
 
 bool CSelectThread::onReceive()

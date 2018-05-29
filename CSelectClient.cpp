@@ -4,23 +4,25 @@
 #include "stdafx.h"
 #include "Client.h"
 #include "CriticalSections.h"
+#include "ThreadManager.h"
 int main()
 {
 
 	CClient Client;
 	Client.Init("127.0.0.1", 9000);
 	Client.Connect();
-	CPacket packet;
+	Client._SelectThread.begin();
+	
 	while (1)
 	{
-		CriticalSections::getInstance()->enter();
+	/*	CriticalSections::getInstance()->enter();
 		Client.CopyMessageQue();
 		for (auto packet : Client.getQue().messageQue)
 		{
 			Client.getQue().packetParsing(packet);
 		}
 		Client.getQue().messageQue.clear();
-		CriticalSections::getInstance()->leave();
+		CriticalSections::getInstance()->leave();*/
 	}
 
     return 0;
