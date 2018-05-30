@@ -4,6 +4,7 @@
 
 CSelectThread::CSelectThread() : recvEvent(INVALID_HANDLE_VALUE), receivePacketSize(0)
 {
+	recvEvent = WSACreateEvent();
 }
 
 
@@ -15,6 +16,7 @@ void CSelectThread::threadMain()
 {	
 	while (1)
 	{
+		Sleep(5);
 		WSANETWORKEVENTS netEvent;
 
 		ZeroMemory(&netEvent, sizeof(netEvent));
@@ -41,9 +43,9 @@ bool CSelectThread::onReceive()
 		if (receivedPacket.isValidPacket() == true && receivePacketSize >= (int)receivedPacket.getPacketSize())
 		{
 			char buffer[PACKETBUFFERSIZE];
-			CriticalSections::getInstance()->enter();
-			messageQueue.push_back(receivedPacket);
-			CriticalSections::getInstance()->leave();
+			recvQue.cs.enter();
+			recvQue.recvQue.push(receivedPacket);
+			recvQue.cs.leave();
 			receivePacketSize -= receivedPacket.getPacketSize();
 			CopyMemory(buffer, (receiveBuffer + receivedPacket.getPacketSize()), receivePacketSize);
 			CopyMemory(receiveBuffer, buffer, receivePacketSize);

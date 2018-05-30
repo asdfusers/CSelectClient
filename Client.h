@@ -3,6 +3,9 @@
 #include "Packet.h"
 #include "SelectThread.h"
 
+#include "RecvQue.h"
+#include "SendQue.h"
+
 
 class CClient
 {
@@ -13,12 +16,16 @@ public:
 	bool Init(std::string IP, int PORT);
 	bool Connect();
 	void CopyMessageQue();
-
-	CMessageQueue getQue() { return _MessageQue; }
-
+	void CopySendMessageQue();
 	CSelectThread _SelectThread;
+	CRecvQue& getQue() { return recvQue; }
+	CSendQue& getSendQue() { return sendQue; }
+	CriticalSections cs;
 private:
-	CMessageQueue _MessageQue;
+	
+	CRecvQue recvQue;
+	CSendQue sendQue;
+	
 	SOCKET mSocket;
 	SOCKADDR_IN addr;
 	int addrLen;

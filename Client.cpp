@@ -15,7 +15,9 @@ CClient::CClient()
 
 CClient::~CClient()
 {
+	shutdown(mSocket, SD_BOTH);
 	closesocket(mSocket);
+	WSACleanup();
 }
 
 bool CClient::Init(std::string IP, int PORT)
@@ -32,10 +34,8 @@ bool CClient::Init(std::string IP, int PORT)
 	addr.sin_addr.S_un.S_addr = inet_addr(IP.c_str());
 
 	_SelectThread.setSocket(mSocket);
-	_MessageQue.setSocket(mSocket);
-	
-
-	
+	recvQue.setSocket(mSocket);
+	sendQue.SetSocket(mSocket);
 	return true;
 }
 
@@ -52,17 +52,24 @@ bool CClient::Connect()
 	else
 	{
 		std::cout << "연결 성공!!" << std::endl;
-		return true;
 	}
-	
+	return true;
 }
 	
-
 void CClient::CopyMessageQue()
 {
-	CriticalSections::getInstance()->enter();
-	_MessageQue.messageQue.assign(_SelectThread.getQue().begin(), _SelectThread.getQue().end());
-	CriticalSections::getInstance()->leave();
+	recvQue.cs.enter();
+	recvQue.recvQue.push(_SelectThread.getQue().recvQue.front());
+	_SelectThread.getQue().recvQue.pop();
+	recvQue.cs.leave();
+}
+
+void CClient::CopySendMessageQue()
+{
+	sendQue.cs.enter();
+	sendQue.sendQue.push(recvQue.sendQue.front());
+	recvQue.sendQue.pop();
+	sendQue.cs.leave();
 }
 
 

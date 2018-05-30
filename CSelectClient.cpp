@@ -13,17 +13,24 @@ int main()
 	Client.Connect();
 	Client._SelectThread.begin();
 	
+
 	while (1)
 	{
-	/*	CriticalSections::getInstance()->enter();
-		Client.CopyMessageQue();
-		for (auto packet : Client.getQue().messageQue)
+		Client.cs.enter();
+		if (!Client._SelectThread.getQue().recvQue.empty())
 		{
-			Client.getQue().packetParsing(packet);
+			Client.CopyMessageQue();
+			Client.getQue().packetParsing(Client.getQue().recvQue.front());
+			Client.getQue().recvQue.pop();
 		}
-		Client.getQue().messageQue.clear();
-		CriticalSections::getInstance()->leave();*/
+		if (!Client.getQue().sendQue.empty())
+		{
+			Client.CopySendMessageQue();
+			Client.getSendQue().SendMessageW();
+		}
+		Client.cs.leave();
 	}
+
 
     return 0;
 }
