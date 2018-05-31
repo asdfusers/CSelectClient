@@ -13,6 +13,7 @@ CRecvQue::~CRecvQue()
 
 void CRecvQue::packetParsing(CPacket packet)
 {
+	cs.enter();
 	switch (packet.id())
 	{
 	case  P_CONNECTIONSUCCESS_ACK:	onPConnectionSuccessAck(packet);		break;
@@ -20,10 +21,12 @@ void CRecvQue::packetParsing(CPacket packet)
 	case  P_TESTPACKET2_ACK:			onPTestPacket2Ack(packet);			break;
 	case  P_TESTPACKET3_ACK:			onPTestPacket3Ack(packet);			break;
 	}
+	cs.leave();
 }
 
 void CRecvQue::onPConnectionSuccessAck(CPacket & packet)
 {
+
 	{
 		wchar_t str[127] = { 0, };
 		packet >> str;
@@ -34,12 +37,16 @@ void CRecvQue::onPConnectionSuccessAck(CPacket & packet)
 		CPacket sendPacket(P_TESTPACKET1_REQ);
 
 		sendPacket << L"Test packet 1";
+		cs.enter();
 		sendQue.push(sendPacket);
+		cs.leave();
 	}
+	
 }
 
 void CRecvQue::onPTestPacket1Ack(CPacket & packet)
 {
+	
 	{
 		wchar_t str[127];
 		packet >> str;
@@ -50,9 +57,11 @@ void CRecvQue::onPTestPacket1Ack(CPacket & packet)
 		CPacket sendPacket(P_TESTPACKET2_REQ);
 
 		sendPacket << L"Test packet 2";
+		cs.enter();
 		sendQue.push(sendPacket);
-		
+		cs.leave();
 	}
+
 }
 
 void CRecvQue::onPTestPacket2Ack(CPacket & packet)
@@ -68,13 +77,16 @@ void CRecvQue::onPTestPacket2Ack(CPacket & packet)
 		CPacket sendPacket(P_TESTPACKET3_REQ);
 
 		sendPacket << L"Test packet 3";
+		cs.enter();
 		sendQue.push(sendPacket);
-		
+		cs.leave();
+
 	}
 }
 
 void CRecvQue::onPTestPacket3Ack(CPacket & packet)
 {
+	cs.enter();
 	{
 		wchar_t str[127];
 
@@ -86,7 +98,10 @@ void CRecvQue::onPTestPacket3Ack(CPacket & packet)
 		CPacket sendPacket(P_TESTPACKET1_REQ);
 
 		sendPacket << L"Test packet 1";
+		cs.enter();
 		sendQue.push(sendPacket);
+		cs.leave();
+
 		
 	}
 }
