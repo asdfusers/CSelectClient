@@ -29,6 +29,7 @@ int main()
 			Client.getSendQue().SendMessageW();
 		}
 		Client.cs.leave();
+		Sleep(1);
 	}
 
 

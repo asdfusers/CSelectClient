@@ -16,7 +16,7 @@ void CRecvQue::packetParsing(CPacket packet)
 	switch (packet.id())
 	{
 	case  P_CONNECTIONSUCCESS_ACK:	onPConnectionSuccessAck(packet);		break;
-	case  P_TESTPACKET1_ACK:			onPTestPacket1Ack(packet);			break;
+	case  P_LOGINPACKET_ACK:			onPTestPacket1Ack(packet);			break;
 	case  P_TESTPACKET2_ACK:			onPTestPacket2Ack(packet);			break;
 	case  P_TESTPACKET3_ACK:			onPTestPacket3Ack(packet);			break;
 	}
@@ -31,9 +31,12 @@ void CRecvQue::onPConnectionSuccessAck(CPacket & packet)
 	}
 	{
 
-		CPacket sendPacket(P_TESTPACKET1_REQ);
-
-		sendPacket << L"Test packet 1";
+		CPacket sendPacket(P_LOGINPACKET_REQ);
+		Login log;
+		std::cin >> log.ID;
+		std::cin >> log.password;
+	
+		sendPacket << log;
 		sendQue.push(sendPacket);
 	}
 }
@@ -83,7 +86,7 @@ void CRecvQue::onPTestPacket3Ack(CPacket & packet)
 	}
 
 	{
-		CPacket sendPacket(P_TESTPACKET1_REQ);
+		CPacket sendPacket(P_TESTPACKET2_REQ);
 
 		sendPacket << L"Test packet 1";
 		sendQue.push(sendPacket);

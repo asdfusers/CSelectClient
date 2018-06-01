@@ -1,6 +1,5 @@
 #pragma once
 #include "stdafx.h"
-#include "MessageQueue.h"
 #include "Thread.h"
 #include "Packet.h"
 #include "RecvQue.h"
@@ -23,7 +22,7 @@ private:
 	CRecvQue recvQue;
 
 	int receivePacketSize;
-	char receiveBuffer[MAX_BUFFER_SIZE];
+	char receiveBuffer[PACKETBUFFERSIZE];
 	WSAEVENT recvEvent;
 	
 	int retVal;

@@ -30,9 +30,6 @@
     <ClInclude Include="SelectThread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MessageQueue.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RecvQue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -51,9 +48,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SelectThread.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MessageQueue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RecvQue.cpp">

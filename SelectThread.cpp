@@ -16,7 +16,7 @@ void CSelectThread::threadMain()
 {	
 	while (1)
 	{
-		Sleep(5);
+		Sleep(1);
 		WSANETWORKEVENTS netEvent;
 
 		ZeroMemory(&netEvent, sizeof(netEvent));
@@ -32,6 +32,7 @@ void CSelectThread::threadMain()
 
 bool CSelectThread::onReceive()
 {
+
 	CPacket receivedPacket;
 	DWORD bufSize = PACKETBUFFERSIZE - receivePacketSize;
 
