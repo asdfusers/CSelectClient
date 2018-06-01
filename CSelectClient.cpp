@@ -16,8 +16,9 @@ int main()
 
 	while (1)
 	{
+		Client.cs.enter();
 		if (!Client._SelectThread.getQue().recvQue.empty())
-		{		
+		{
 			Client.CopyMessageQue();
 			Client.getQue().packetParsing(Client.getQue().recvQue.front());
 			Client.getQue().recvQue.pop();
@@ -27,11 +28,10 @@ int main()
 			Client.CopySendMessageQue();
 			Client.getSendQue().SendMessageW();
 		}
-		Sleep(1);
+		Client.cs.leave();
 	}
-	CThreadManager::getInstance()->join();
 
-	
+
     return 0;
 }
 

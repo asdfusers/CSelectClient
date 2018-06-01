@@ -1,5 +1,6 @@
 #pragma once
 #include "stdafx.h"
+#include "MessageQueue.h"
 #include "Thread.h"
 #include "Packet.h"
 #include "RecvQue.h"

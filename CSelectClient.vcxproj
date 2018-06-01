@@ -151,6 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h" />
+    <ClInclude Include="MessageQueue.h" />
     <ClInclude Include="RecvQue.h" />
     <ClInclude Include="SelectThread.h" />
     <ClInclude Include="SendQue.h" />
@@ -160,6 +161,7 @@
   <ItemGroup>
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="CSelectClient.cpp" />
+    <ClCompile Include="MessageQueue.cpp" />
     <ClCompile Include="RecvQue.cpp" />
     <ClCompile Include="SelectThread.cpp" />
     <ClCompile Include="SendQue.cpp" />

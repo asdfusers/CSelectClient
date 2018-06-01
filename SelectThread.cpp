@@ -16,7 +16,9 @@ void CSelectThread::threadMain()
 {	
 	while (1)
 	{
+		Sleep(5);
 		WSANETWORKEVENTS netEvent;
+
 		ZeroMemory(&netEvent, sizeof(netEvent));
 		WSAEventSelect(mSocket, recvEvent, FD_READ | FD_CLOSE);
 		WSAEnumNetworkEvents(mSocket, recvEvent, &netEvent);
@@ -25,7 +27,6 @@ void CSelectThread::threadMain()
 			onReceive();
 		else if ((netEvent.lNetworkEvents & FD_CLOSE) == FD_CLOSE)
 			onClose();
-		Sleep(1);
 	}
 }
 
