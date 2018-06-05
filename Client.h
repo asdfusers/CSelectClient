@@ -3,9 +3,7 @@
 #include "Packet.h"
 #include "SelectThread.h"
 
-#include "RecvQue.h"
-#include "SendQue.h"
-
+#include "CriticalSectionLock.h"
 
 class CClient
 {
@@ -16,22 +14,28 @@ public:
 	bool Init(std::string IP, int PORT);
 	bool Connect();
 	void CopyMessageQue();
-	void CopySendMessageQue();
+	
 	CSelectThread _SelectThread;
-	CRecvQue& getQue() { return recvQue; }
-	CSendQue& getSendQue() { return sendQue; }
-	CriticalSections cs;
+	CS::CriticalSection cs;
+
+	bool sendMessage(CPacket packet);
+
+	void Update();
+
+
+	void packetParsing(CPacket packet);
+	void onPConnectionSuccessAck(CPacket & packet);
+	void onPTestPacket1Ack(CPacket & packet);
+	void onPTestPacket2Ack(CPacket & packet);
+	void onPTestPacket3Ack(CPacket & packet);
+
 private:
-	
-	CRecvQue recvQue;
-	CSendQue sendQue;
-	
 	SOCKET mSocket;
 	SOCKADDR_IN addr;
 	int addrLen;
 	int retVal;
-
-	std::list<char*> messageQue;
+	CMessageQue recvQue;
+	CMessageQue sendQue;
 
 };
 

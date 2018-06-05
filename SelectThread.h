@@ -2,7 +2,9 @@
 #include "stdafx.h"
 #include "Thread.h"
 #include "Packet.h"
-#include "RecvQue.h"
+#include "MessageQue.h"
+#include "CriticalSectionLock.h"
+#include "CriticalSections.h"
 class CSelectThread : public CThread
 {
 public:
@@ -15,11 +17,12 @@ public:
 	void onClose();
 	void setSocket(SOCKET _Sock) { mSocket = _Sock; }
 
-	CRecvQue& getQue() { return recvQue; }
+	CMessageQue recvQue;
+
+	CS::CriticalSection cs;
 
 private:
 	SOCKET mSocket;
-	CRecvQue recvQue;
 
 	int receivePacketSize;
 	char receiveBuffer[PACKETBUFFERSIZE];

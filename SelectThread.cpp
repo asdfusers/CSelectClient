@@ -36,7 +36,7 @@ bool CSelectThread::onReceive()
 	CPacket receivedPacket;
 	DWORD bufSize = PACKETBUFFERSIZE - receivePacketSize;
 
-	retVal = recv(mSocket, &receiveBuffer[receivePacketSize], bufSize, 0);
+	retVal =recv(mSocket, &receiveBuffer[receivePacketSize], bufSize, 0);
 	receivePacketSize = retVal;
 	while (receivePacketSize > 0)
 	{
@@ -44,9 +44,8 @@ bool CSelectThread::onReceive()
 		if (receivedPacket.isValidPacket() == true && receivePacketSize >= (int)receivedPacket.getPacketSize())
 		{
 			char buffer[PACKETBUFFERSIZE];
-			recvQue.cs.enter();
-			recvQue.recvQue.push(receivedPacket);
-			recvQue.cs.leave();
+			CCriticalSectionLock cs(cs);
+			recvQue.MessageQue.push(receivedPacket);
 			receivePacketSize -= receivedPacket.getPacketSize();
 			CopyMemory(buffer, (receiveBuffer + receivedPacket.getPacketSize()), receivePacketSize);
 			CopyMemory(receiveBuffer, buffer, receivePacketSize);
