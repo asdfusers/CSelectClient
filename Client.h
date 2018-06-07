@@ -25,8 +25,8 @@ public:
 
 	void packetParsing(CPacket packet);
 	void onPConnectionSuccessAck(CPacket & packet);
-	void onPTestPacket1Ack(CPacket & packet);
-	void onPTestPacket2Ack(CPacket & packet);
+	void onPSelectLobbyOption(CPacket & packet);
+	void onPSelectLobby(CPacket & packet);
 	void onPTestPacket3Ack(CPacket & packet);
 
 private:

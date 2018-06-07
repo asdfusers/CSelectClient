@@ -90,14 +90,15 @@ void CClient::packetParsing(CPacket packet)
 	switch (packet.id())
 	{
 	case P_CONNECTIONSUCCESS_ACK:		onPConnectionSuccessAck(packet);	break;
-	case  P_LOGINPACKET_ACK:			onPTestPacket1Ack(packet);			break;
-	case  P_TESTPACKET2_ACK:			onPTestPacket2Ack(packet);			break;
-	case  P_TESTPACKET3_ACK:			onPTestPacket3Ack(packet);			break;
+	case  P_LOGINPACKET_ACK:			onPSelectLobbyOption(packet);			break;
+	case  P_LOBBYOPTION_ACK:			onPSelectLobby(packet);			break;
+//	case  P_SELECTOPTION_ACK:			onPSelectLobby(packet);			break;
 	}
 }
 
 void CClient::onPConnectionSuccessAck(CPacket & packet)
 {
+	system("cls");
 	wchar_t str[127] = { 0, };
 	packet >> str;
 	printf("%s", str);
@@ -112,34 +113,41 @@ void CClient::onPConnectionSuccessAck(CPacket & packet)
 
 	}
 }
-void CClient::onPTestPacket1Ack(CPacket & packet)
+void CClient::onPSelectLobbyOption(CPacket & packet)
 {
-
 	{
+		system("cls");
 		wchar_t str[127];
 		packet >> str;
-		printf("P_TESTPACKET2_ACK received : %s\n", str);
+		printf("%s \n", str);
 	}
 
 
 	{
-		CPacket sendPacket(P_TESTPACKET2_REQ);
-		sendPacket << L"Test packet 2";
+		CPacket sendPacket(P_LOBBYOPTION_REQ);
+		int iInsert;
+		cin >> iInsert;
+		sendPacket << iInsert;
 		sendQue.MessageQue.push(sendPacket);
 	}
 }
 
-void CClient::onPTestPacket2Ack(CPacket & packet)
+
+void CClient::onPSelectLobby(CPacket & packet)
 {
 	{
+		system("cls");
 		wchar_t str[127];
 		packet >> str;
-		printf("P_TESTPACKET3_ACK received : %s\n", str);
+		printf("%s \n", str);
 	}
+	
 
 	{
-		CPacket sendPacket(P_TESTPACKET3_REQ);
-		sendPacket << L"Test packet 3";
+		CPacket sendPacket(P_ENTERROOM_REQ);
+		int iInput;
+		cin >> iInput;
+		sendPacket << iInput;
 		sendQue.MessageQue.push(sendPacket);
 	}
 }
@@ -153,9 +161,9 @@ void CClient::onPTestPacket3Ack(CPacket & packet)
 	}
 
 	{
-		CPacket sendPacket(P_TESTPACKET2_REQ);
+		/*CPacket sendPacket(P_TESTPACKET2_REQ);
 		sendPacket << L"Test packet 1";
-		sendQue.MessageQue.push(sendPacket);
+		sendQue.MessageQue.push(sendPacket);*/
 
 	}
 }
