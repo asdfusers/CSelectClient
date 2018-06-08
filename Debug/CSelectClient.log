@@ -1,23 +1,8 @@
-﻿  Client.cpp
-c:\users\gc\documents\visual studio 2015\projects\cselectclient\client.cpp(104): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'wchar_t *'
-  c:\users\gc\documents\visual studio 2015\projects\cselectclient\client.cpp(104): note: consider using '%ls' in the format string
-  c:\users\gc\documents\visual studio 2015\projects\cselectclient\client.cpp(104): note: consider using '%lls' in the format string
-  c:\users\gc\documents\visual studio 2015\projects\cselectclient\client.cpp(104): note: consider using '%Ls' in the format string
-  c:\users\gc\documents\visual studio 2015\projects\cselectclient\client.cpp(104): note: consider using '%ws' in the format string
-c:\users\gc\documents\visual studio 2015\projects\cselectclient\client.cpp(122): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'wchar_t *'
-  c:\users\gc\documents\visual studio 2015\projects\cselectclient\client.cpp(122): note: consider using '%ls' in the format string
-  c:\users\gc\documents\visual studio 2015\projects\cselectclient\client.cpp(122): note: consider using '%lls' in the format string
-  c:\users\gc\documents\visual studio 2015\projects\cselectclient\client.cpp(122): note: consider using '%Ls' in the format string
-  c:\users\gc\documents\visual studio 2015\projects\cselectclient\client.cpp(122): note: consider using '%ws' in the format string
-c:\users\gc\documents\visual studio 2015\projects\cselectclient\client.cpp(142): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'wchar_t *'
-  c:\users\gc\documents\visual studio 2015\projects\cselectclient\client.cpp(142): note: consider using '%ls' in the format string
-  c:\users\gc\documents\visual studio 2015\projects\cselectclient\client.cpp(142): note: consider using '%lls' in the format string
-  c:\users\gc\documents\visual studio 2015\projects\cselectclient\client.cpp(142): note: consider using '%Ls' in the format string
-  c:\users\gc\documents\visual studio 2015\projects\cselectclient\client.cpp(142): note: consider using '%ws' in the format string
-c:\users\gc\documents\visual studio 2015\projects\cselectclient\client.cpp(160): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'wchar_t *'
-  c:\users\gc\documents\visual studio 2015\projects\cselectclient\client.cpp(160): note: consider using '%ls' in the format string
-  c:\users\gc\documents\visual studio 2015\projects\cselectclient\client.cpp(160): note: consider using '%lls' in the format string
-  c:\users\gc\documents\visual studio 2015\projects\cselectclient\client.cpp(160): note: consider using '%Ls' in the format string
-  c:\users\gc\documents\visual studio 2015\projects\cselectclient\client.cpp(160): note: consider using '%ws' in the format string
-  CSelectClient.vcxproj -> C:\Users\GC\Documents\Visual Studio 2015\Projects\CSelectClient\Debug\CSelectClient.exe
-  CSelectClient.vcxproj -> C:\Users\GC\Documents\Visual Studio 2015\Projects\CSelectClient\Debug\CSelectClient.pdb (Full PDB)
+﻿  CSelectClient.cpp
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  SelectThread.cpp
+  MessageQue.cpp
+  Client.cpp
+  CSelectClient.vcxproj -> C:\Users\GC\Documents\Visual Studio 2015\Projects\CSelectServer\Debug\CSelectClient.exe
+  CSelectClient.vcxproj -> C:\Users\GC\Documents\Visual Studio 2015\Projects\CSelectServer\Debug\CSelectClient.pdb (Full PDB)

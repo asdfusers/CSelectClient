@@ -92,7 +92,8 @@ void CClient::packetParsing(CPacket packet)
 	case P_CONNECTIONSUCCESS_ACK:		onPConnectionSuccessAck(packet);	break;
 	case  P_LOGINPACKET_ACK:			onPSelectLobbyOption(packet);			break;
 	case  P_LOBBYOPTION_ACK:			onPSelectLobby(packet);			break;
-//	case  P_SELECTOPTION_ACK:			onPSelectLobby(packet);			break;
+	case  P_ENTERROOM_ACK:				onPEnterRoom(packet);			break;
+	case  P_BROADCAST_ENTER_ROOM_ACK:   onPBroadCastEnterRoom(packet);  break;
 	}
 }
 
@@ -152,20 +153,32 @@ void CClient::onPSelectLobby(CPacket & packet)
 	}
 }
 
-void CClient::onPTestPacket3Ack(CPacket & packet)
+void CClient::onPEnterRoom(CPacket & packet)
 {
 	{
+		system("cls");
 		wchar_t str[127];
 		packet >> str;
-		printf("P_TESTPACKET3_ACK received : %s\n", str);
+		printf("%s\n", str);
 	}
 
 	{
-		/*CPacket sendPacket(P_TESTPACKET2_REQ);
-		sendPacket << L"Test packet 1";
-		sendQue.MessageQue.push(sendPacket);*/
+		CPacket sendPacket(P_BROADCAST_ENTER_ROOM_REQ);
+		sendQue.MessageQue.push(sendPacket);
 
 	}
 }
+
+void CClient::onPBroadCastEnterRoom(CPacket & packet)
+{
+	{
+		system("cls");
+		wchar_t str[127];
+		packet >> str;
+		printf("%s\n", str);
+		printf("asdf");
+	}
+}
+
 
 

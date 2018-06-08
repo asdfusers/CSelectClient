@@ -27,8 +27,8 @@ public:
 	void onPConnectionSuccessAck(CPacket & packet);
 	void onPSelectLobbyOption(CPacket & packet);
 	void onPSelectLobby(CPacket & packet);
-	void onPTestPacket3Ack(CPacket & packet);
-
+	void onPEnterRoom(CPacket & packet);
+	void onPBroadCastEnterRoom(CPacket & packet);
 private:
 	SOCKET mSocket;
 	SOCKADDR_IN addr;
