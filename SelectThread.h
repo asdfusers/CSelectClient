@@ -18,6 +18,16 @@ public:
 	void setSocket(SOCKET _Sock) { mSocket = _Sock; }
 
 	CMessageQue recvQue;
+	CMessageQue sendQue;
+	
+	void packetParsing(CPacket packet);
+	void onPConnectionSuccessAck(CPacket & packet);
+	void onPSelectLobbyOption(CPacket & packet);
+	void onPSelectLobby(CPacket & packet);
+	void onPEnterRoom(CPacket & packet);
+	void onPBroadCastEnterRoom(CPacket & packet);
+	void onPReadyAck(CPacket & packet);
+	void onPReadyResultAck(CPacket & packet);
 
 	CS::CriticalSection cs;
 

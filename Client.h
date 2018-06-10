@@ -13,8 +13,8 @@ public:
 
 	bool Init(std::string IP, int PORT);
 	bool Connect();
-	void CopyMessageQue();
-	
+	//void CopyMessageQue();
+	void CopyMessageSendQue();
 	CSelectThread _SelectThread;
 	CS::CriticalSection cs;
 
@@ -23,12 +23,17 @@ public:
 	void Update();
 
 
-	void packetParsing(CPacket packet);
+	/*void packetParsing(CPacket packet);
 	void onPConnectionSuccessAck(CPacket & packet);
 	void onPSelectLobbyOption(CPacket & packet);
 	void onPSelectLobby(CPacket & packet);
 	void onPEnterRoom(CPacket & packet);
 	void onPBroadCastEnterRoom(CPacket & packet);
+	void onPReadyAck(CPacket & packet);
+	void onPReadyResultAck(CPacket & packet);*/
+
+	unsigned short packetHeader;
+	void packetSend(unsigned short _packetHeader);
 private:
 	SOCKET mSocket;
 	SOCKADDR_IN addr;

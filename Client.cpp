@@ -54,11 +54,17 @@ bool CClient::Connect()
 	return true;
 }
 	
-void CClient::CopyMessageQue()
+//void CClient::CopyMessageQue()
+//{
+//	CCriticalSectionLock cs(_SelectThread.cs);
+//	recvQue.MessageQue.push(_SelectThread.recvQue.MessageQue.front());
+//	_SelectThread.recvQue.MessageQue.pop();
+//}
+
+void CClient::CopyMessageSendQue()
 {
-	CCriticalSectionLock cs(_SelectThread.cs);
-	recvQue.MessageQue.push(_SelectThread.recvQue.MessageQue.front());
-	_SelectThread.recvQue.MessageQue.pop();
+	sendQue.MessageQue.push(_SelectThread.sendQue.MessageQue.front());
+	_SelectThread.sendQue.MessageQue.pop();
 }
 
 bool CClient::sendMessage(CPacket packet)
@@ -71,114 +77,227 @@ bool CClient::sendMessage(CPacket packet)
 
 void CClient::Update()
 {
+	
+	//if (!_SelectThread.recvQue.MessageQue.empty())
+	//{
+	//	CopyMessageQue();
+	//	packetParsing(recvQue.MessageQue.front());
+	//	recvQue.MessageQue.pop();
+	//}
 	CCriticalSectionLock cs(cs);
+
 	if (!_SelectThread.recvQue.MessageQue.empty())
 	{
-		CopyMessageQue();
-		packetParsing(recvQue.MessageQue.front());
-		recvQue.MessageQue.pop();
+		packetSend(_SelectThread.recvQue.MessageQue.front().id());
 	}
+
 	if (!sendQue.MessageQue.empty())
 	{
+		
 		sendMessage(sendQue.MessageQue.front());
 		sendQue.MessageQue.pop();
 	}
 }
+//
+//void CClient::packetParsing(CPacket packet)
+//{
+//	switch (packet.id())
+//	{
+//	case P_CONNECTIONSUCCESS_ACK:		onPConnectionSuccessAck(packet);	break;
+//	case  P_LOGINPACKET_ACK:			onPSelectLobbyOption(packet);		break;
+//	case  P_LOBBYOPTION_ACK:			onPSelectLobby(packet);				break;
+//	case  P_ENTERROOM_ACK:				onPEnterRoom(packet);				break;
+//	case  P_BROADCAST_ENTER_ROOM_ACK:   onPBroadCastEnterRoom(packet);		break;
+//	case  P_READY_ACK:					onPReadyAck(packet);				break;
+//	case  P_READYRESULT_ACK:			onPReadyResultAck(packet);			break;
+//	}
+//}
+//
+//void CClient::onPConnectionSuccessAck(CPacket & packet)
+//{
+//	system("cls");
+//	wchar_t str[127] = { 0, };
+//	packet >> str;
+//	printf("%s", str);
+//
+//	{
+//		CPacket sendPacket(P_LOGINPACKET_REQ);
+//		Login log;
+//		std::cin >> log.ID;
+//		std::cin >> log.password;
+//		sendPacket << log;
+//		sendQue.MessageQue.push(sendPacket);
+//
+//	}
+//}
+//void CClient::onPSelectLobbyOption(CPacket & packet)
+//{
+//	{
+//		system("cls");
+//		wchar_t str[127];
+//		packet >> str;
+//		printf("%s \n", str);
+//	}
+//
+//
+//	{
+//		CPacket sendPacket(P_LOBBYOPTION_REQ);
+//		int iInsert;
+//		cin >> iInsert;
+//		sendPacket << iInsert;
+//		sendQue.MessageQue.push(sendPacket);
+//	}
+//}
+//
+//
+//void CClient::onPSelectLobby(CPacket & packet)
+//{
+//	{
+//		system("cls");
+//		wchar_t str[127];
+//		packet >> str;
+//		printf("%s \n", str);
+//	}
+//	
+//
+//	{
+//		CPacket sendPacket(P_ENTERROOM_REQ);
+//		int iInput;
+//		cin >> iInput;
+//		sendPacket << iInput;
+//		sendQue.MessageQue.push(sendPacket);
+//	}
+//}
+//
+//void CClient::onPEnterRoom(CPacket & packet)
+//{
+//	{
+//		system("cls");
+//		wchar_t str[127];
+//		packet >> str;
+//		printf("%s\n", str);
+//	}
+//
+//	{
+//		CPacket sendPacket(P_BROADCAST_ENTER_ROOM_REQ);
+//		sendQue.MessageQue.push(sendPacket);
+//
+//	}
+//}
+//
+//void CClient::onPBroadCastEnterRoom(CPacket & packet)
+//{
+//	{
+//		system("cls");
+//		wchar_t str[127];
+//		packet >> str;
+//		printf("%s\n", str);
+//	}
+//
+//	{
+//		CPacket sendPacket(P_READY_REQ);
+//		sendQue.MessageQue.push(sendPacket);
+//	}
+//}
+//
+//void CClient::onPReadyResultAck(CPacket & packet)
+//{
+//	{
+//		system("cls");
+//		std::cout << std::endl;
+//		wchar_t str[127];
+//		packet >> str;
+//		printf("%s \n", str);
+//	}
+//}
 
-void CClient::packetParsing(CPacket packet)
+void CClient::packetSend(unsigned short _packetHeader)
 {
-	switch (packet.id())
+	CCriticalSectionLock cs(_SelectThread.cs);
+	Sleep(1);
+	switch (_packetHeader)
 	{
-	case P_CONNECTIONSUCCESS_ACK:		onPConnectionSuccessAck(packet);	break;
-	case  P_LOGINPACKET_ACK:			onPSelectLobbyOption(packet);			break;
-	case  P_LOBBYOPTION_ACK:			onPSelectLobby(packet);			break;
-	case  P_ENTERROOM_ACK:				onPEnterRoom(packet);			break;
-	case  P_BROADCAST_ENTER_ROOM_ACK:   onPBroadCastEnterRoom(packet);  break;
+		case P_CONNECTIONSUCCESS_ACK:
+		{
+			CPacket sendPacket(P_LOGINPACKET_REQ);
+			Login log;
+			std::cin >> log.ID;
+			std::cin >> log.password;
+			sendPacket << log;
+			sendQue.MessageQue.push(sendPacket);
+		}
+		break;
+		case P_LOGINPACKET_ACK:
+		{
+			CPacket sendPacket(P_LOBBYOPTION_REQ);
+			int iInsert;
+			cin >> iInsert;
+			sendPacket << iInsert;
+			sendQue.MessageQue.push(sendPacket);
+		}
+		break;
+		case P_LOBBYOPTION_ACK:
+		{
+			CPacket sendPacket(P_ENTERROOM_REQ);
+			int iInput;
+			cin >> iInput;
+			sendPacket << iInput;
+			sendQue.MessageQue.push(sendPacket);
+		}
+		break;
+		case P_ENTERROOM_ACK:
+		{
+			CPacket sendPacket(P_BROADCAST_ENTER_ROOM_REQ);
+			sendQue.MessageQue.push(sendPacket);
+		}
+		break;
+		case P_BROADCAST_ENTER_ROOM_ACK:
+		{
+			CPacket sendPacket(P_READY_REQ);
+			sendQue.MessageQue.push(sendPacket);
+
+		}
+		break;
+		case P_READY_ACK:
+		{
+			CPacket sendPacket(P_READYRESULT_REQ);
+			int iInput;
+			cin >> iInput;
+			sendPacket << iInput;
+			sendQue.MessageQue.push(sendPacket);
+
+		
+		}
+		break;
+
+		case P_READYRESULT_ACK:
+		{
+			
+		}
+		break;
+
 	}
+		_SelectThread.recvQue.MessageQue.pop();
+
 }
 
-void CClient::onPConnectionSuccessAck(CPacket & packet)
-{
-	system("cls");
-	wchar_t str[127] = { 0, };
-	packet >> str;
-	printf("%s", str);
-
-	{
-		CPacket sendPacket(P_LOGINPACKET_REQ);
-		Login log;
-		std::cin >> log.ID;
-		std::cin >> log.password;
-		sendPacket << log;
-		sendQue.MessageQue.push(sendPacket);
-
-	}
-}
-void CClient::onPSelectLobbyOption(CPacket & packet)
-{
-	{
-		system("cls");
-		wchar_t str[127];
-		packet >> str;
-		printf("%s \n", str);
-	}
-
-
-	{
-		CPacket sendPacket(P_LOBBYOPTION_REQ);
-		int iInsert;
-		cin >> iInsert;
-		sendPacket << iInsert;
-		sendQue.MessageQue.push(sendPacket);
-	}
-}
-
-
-void CClient::onPSelectLobby(CPacket & packet)
-{
-	{
-		system("cls");
-		wchar_t str[127];
-		packet >> str;
-		printf("%s \n", str);
-	}
-	
-
-	{
-		CPacket sendPacket(P_ENTERROOM_REQ);
-		int iInput;
-		cin >> iInput;
-		sendPacket << iInput;
-		sendQue.MessageQue.push(sendPacket);
-	}
-}
-
-void CClient::onPEnterRoom(CPacket & packet)
-{
-	{
-		system("cls");
-		wchar_t str[127];
-		packet >> str;
-		printf("%s\n", str);
-	}
-
-	{
-		CPacket sendPacket(P_BROADCAST_ENTER_ROOM_REQ);
-		sendQue.MessageQue.push(sendPacket);
-
-	}
-}
-
-void CClient::onPBroadCastEnterRoom(CPacket & packet)
-{
-	{
-		system("cls");
-		wchar_t str[127];
-		packet >> str;
-		printf("%s\n", str);
-		printf("asdf");
-	}
-}
-
+//void CClient::onPReadyAck(CPacket & packet)
+//{
+//	{
+//		std::cout << std::endl;
+//		wchar_t str[127];
+//		packet >> str;
+//		printf("%s \n", str);
+//	}
+//
+//	{
+//		CPacket sendPacket(P_READYRESULT_REQ);
+//		int iInput;
+//		cin >> iInput;
+//		sendPacket << iInput;
+//		sendQue.MessageQue.push(sendPacket);
+//	}
+//}
+//
 
 
