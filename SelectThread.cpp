@@ -29,6 +29,7 @@ void CSelectThread::threadMain()
 		if ((netEvent.lNetworkEvents & FD_READ) == FD_READ)
 		{
 			onReceive();
+			
 		}
 		else if ((netEvent.lNetworkEvents & FD_CLOSE) == FD_CLOSE)
 			onClose();
@@ -51,8 +52,17 @@ bool CSelectThread::onReceive()
 			char buffer[PACKETBUFFERSIZE];
 			
 			CCriticalSectionLock cs(cs);
-			recvQue.MessageQue.push(receivedPacket);
-			packetParsing(recvQue.MessageQue.front());
+			if (receivedPacket.id() == P_ENEMYPOS_ACK)
+			{
+				GameRecvQue.MessageQue.push(receivedPacket);
+				packetParsing(GameRecvQue.MessageQue.front());
+				GameRecvQue.MessageQue.pop();
+			}
+			else
+			{
+				recvQue.MessageQue.push(receivedPacket);
+				packetParsing(recvQue.MessageQue.front());
+			}
 			receivePacketSize -= receivedPacket.getPacketSize();
 			CopyMemory(buffer, (receiveBuffer + receivedPacket.getPacketSize()), receivePacketSize);
 			CopyMemory(receiveBuffer, buffer, receivePacketSize);
@@ -69,8 +79,7 @@ void CSelectThread::onClose()
 }
 
 void CSelectThread::packetParsing(CPacket packet)
-{
-	
+{	
 	switch (packet.id())
 	{
 	case P_CONNECTIONSUCCESS_ACK:		onPConnectionSuccessAck(packet);	break;
@@ -83,7 +92,7 @@ void CSelectThread::packetParsing(CPacket packet)
 	case  P_GAMESTARTREADY_ACK:			onPGameStartAck(packet);			break;
 	case  P_GAMESTART_ACK:				onPGameStart(packet);				break;
 	case  P_GAMEINPUT_ACK:				onPGameInput(packet);				break;
-
+	case  P_ENEMYPOS_ACK:				onPEnemyPos(packet);				break;
 	}
 }
 
@@ -197,8 +206,6 @@ void CSelectThread::onPGameStart(CPacket & packet)
 
 void CSelectThread::onPGameInput(CPacket & packet)
 {
-	if (CGameManager::GetInst()->GetUserPool().find(1)->second.getIteam() == 1)
-	{
 		bool bAbleCheck;
 		wchar_t cInput[5];
 		packet >> bAbleCheck >> cInput;
@@ -218,36 +225,42 @@ void CSelectThread::onPGameInput(CPacket & packet)
 
 		if (bAbleCheck)
 		{
-			CGameManager::GetInst()->GetUserPool().find(1)->second.MovePlayer(CGameManager::GetInst()->getStage()->m_Stage, CGameManager::GetInst()->GetUserPool().find(1)->second, keyInput);
+			CGameManager::GetInst()->GetUserPool().find(1)->second.MovePlayer(CGameManager::GetInst()->getStage()->m_Stage,
+				&CGameManager::GetInst()->findUser(1)->second, keyInput);
 			system("cls");
-			CGameManager::GetInst()->getStage()->Render(CGameManager::GetInst()->getStage()->m_Stage, &CGameManager::GetInst()->GetUserPool().find(1)->second, &CGameManager::GetInst()->GetUserPool().find(2)->second);
+			CGameManager::GetInst()->getStage()->Render(CGameManager::GetInst()->getStage()->m_Stage,
+				&CGameManager::GetInst()->findUser(1)->second, &CGameManager::GetInst()->findUser(2)->second);
 		}
-	}
-	else
+}
+
+void CSelectThread::onPEnemyPos(CPacket & packet)
+{
+	bool bAbleCheck;
+	wchar_t cInput[5];
+	packet >> bAbleCheck >> cInput;
+
+	//변환 과정
+	char* pStr;
+	int strSize = WideCharToMultiByte(CP_ACP, 0, cInput, -1, NULL, 0, NULL, NULL);
+	pStr = new char[strSize];
+	WideCharToMultiByte(CP_ACP, 0, cInput, -1, pStr, strSize, 0, 0);
+
+	std::string asdf;
+	for (int i = 0; i < sizeof(pStr); i++)
 	{
-		bool bAbleCheck;
-		wchar_t cInput[5];
-		packet >> bAbleCheck >> cInput;
-
-		//변환 과정
-		char* pStr;
-		int strSize = WideCharToMultiByte(CP_ACP, 0, cInput, -1, NULL, 0, NULL, NULL);
-		pStr = new char[strSize];
-		WideCharToMultiByte(CP_ACP, 0, cInput, -1, pStr, strSize, 0, 0);
-
-		std::string asdf;
-		for (int i = 0; i < sizeof(pStr); i++)
-		{
-			asdf += pStr[i];
-		}
-		char keyInput = asdf[0];
-
-		if (bAbleCheck)
-		{
-			CGameManager::GetInst()->GetUserPool().find(2)->second.MovePlayer(CGameManager::GetInst()->getStage()->m_Stage, CGameManager::GetInst()->GetUserPool().find(2)->second, keyInput);
-			system("cls");
-			CGameManager::GetInst()->getStage()->Render(CGameManager::GetInst()->getStage()->m_Stage, &CGameManager::GetInst()->GetUserPool().find(1)->second, &CGameManager::GetInst()->GetUserPool().find(2)->second);
-		}
+		asdf += pStr[i];
 	}
+	char keyInput = asdf[0];
+
+	if (bAbleCheck)
+	{
+		CGameManager::GetInst()->GetUserPool().find(2)->second.MovePlayer(CGameManager::GetInst()->getStage()->m_Stage,
+			&CGameManager::GetInst()->findUser(2)->second, keyInput);
+		XTrace(L"%d %d", CGameManager::GetInst()->GetUserPool().find(1)->second.GetPlayerPos().x, CGameManager::GetInst()->GetUserPool().find(1)->second.GetPlayerPos().y);
+		system("cls");
+		CGameManager::GetInst()->getStage()->Render(CGameManager::GetInst()->getStage()->m_Stage,
+			&CGameManager::GetInst()->findUser(1)->second, &CGameManager::GetInst()->findUser(2)->second);
+	}
+	
 
 }

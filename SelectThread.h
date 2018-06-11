@@ -17,6 +17,7 @@ public:
 	void onClose();
 	void setSocket(SOCKET _Sock) { mSocket = _Sock; }
 
+	CMessageQue GameRecvQue;
 	CMessageQue recvQue;
 	CMessageQue sendQue;
 	
@@ -31,7 +32,7 @@ public:
 	void onPGameStartAck(CPacket & packet);
 	void onPGameStart(CPacket & packet);
 	void onPGameInput(CPacket & packet);
-	
+	void onPEnemyPos(CPacket & packet);
 	CS::CriticalSection cs;
 
 private:

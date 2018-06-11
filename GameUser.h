@@ -14,7 +14,7 @@ public:
 	void MoveDown(char Maze[21][21], CGameUser* pPlayer);
 	void MoveRight(char Maze[21][21], CGameUser* pPlayer);
 	void MoveLeft(char Maze[21][21], CGameUser* pPlayer);
-	void MovePlayer(char Maze[21][21], CGameUser& pPlayer, char cInput);
+	void MovePlayer(char Maze[21][21], CGameUser* pPlayer, char cInput);
 	void CreateBomb(char Maze[21][21], CGameUser* pPlayer, std::deque<CBomb>* BombQue);
 	void Fire(char Maze[21][21], CGameUser * pPlayer, std::deque<CBomb> bomb);
 

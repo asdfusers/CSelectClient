@@ -33,41 +33,37 @@ void CGameUser::MoveLeft(char Maze[21][21], CGameUser * pPlayer)
 	--pPlayer->pos.x;
 }
 
-void CGameUser::MovePlayer(char Maze[21][21], CGameUser& pPlayer, char cInput)
+void CGameUser::MovePlayer(char Maze[21][21], CGameUser* pPlayer, char cInput)
 {
 	switch (cInput)
 	{
 	case 'w':
 	case 'W':
-		MoveUp(Maze, &pPlayer);
+		MoveUp(Maze, pPlayer);
 		break;
 	case 's':
 	case 'S':
-		MoveDown(Maze, &pPlayer);
+		MoveDown(Maze, pPlayer);
 		break;
 	case 'a':
 	case 'A':
-		MoveLeft(Maze, &pPlayer);
+		MoveLeft(Maze, pPlayer);
 		break;
 	case 'd':
 	case 'D':
-		MoveRight(Maze, &pPlayer);
+		MoveRight(Maze, pPlayer);
 		break;
-
-	case VK_SPACE:
-	{
-		CreateBomb(Maze, &pPlayer, &pPlayer.BombQue);
+	case 'r':
+	case 'R':
+		CreateBomb(Maze, pPlayer, &pPlayer->BombQue);
 		break;
-	}
 	case 't':
 	case 'T':
-	{
-		Fire(Maze, &pPlayer, pPlayer.BombQue);
-	}
-	break;
+		Fire(Maze, pPlayer, pPlayer->BombQue);
+		break;
 	}
 
-	XTrace(L"%d %d", pPlayer.GetPlayerPos().x, pPlayer.GetPlayerPos().y);
+	XTrace(L"%d %d", pPlayer->GetPlayerPos().x, pPlayer->GetPlayerPos().y);
 }
 
 void CGameUser::CreateBomb(char Maze[21][21], CGameUser * pPlayer, std::deque<CBomb>* BombQue)

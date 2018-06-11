@@ -11,6 +11,7 @@ public:
 
 	
 	void insertPool(int i, CGameUser& User);
+	std::map<int, CGameUser>::iterator findUser(int i);
 	static CGameManager* GetInst()
 	{
 		if (!m_pInst)
@@ -27,6 +28,7 @@ public:
 private:
 	std::map<int, CGameUser> userPool;
 	static CGameManager* m_pInst;
+	std::map<int, CGameUser>::iterator itr;
 	CStage* m_pCurStage;
 };
 

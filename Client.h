@@ -44,6 +44,6 @@ private:
 	CMessageQue sendQue;
 
 	
-	std::string cInput;
+	wchar_t cInput;
 };
 

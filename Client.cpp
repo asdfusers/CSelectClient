@@ -78,13 +78,11 @@ bool CClient::sendMessage(CPacket packet)
 
 void CClient::Update()
 {
-	
-	CCriticalSectionLock cs(cs);
-
 	if (!_SelectThread.recvQue.MessageQue.empty())
 	{
 		CopyMessageQue();
 	}
+	CCriticalSectionLock cs(cs);
 	if (!recvQue.MessageQue.empty())
 	{
 		packetSend(recvQue.MessageQue.front().id());
@@ -92,7 +90,6 @@ void CClient::Update()
 
 	if (!sendQue.MessageQue.empty())
 	{
-		
 		sendMessage(sendQue.MessageQue.front());
 		sendQue.MessageQue.pop();
 	}
@@ -170,7 +167,8 @@ void CClient::packetSend(unsigned short _packetHeader)
 			CPacket sendPacket(P_GAMEINPUT_REQ);
 			
 			cInput = _getch();
-			sendPacket << cInput << CGameManager::GetInst()->GetUserPool().find(1)->second.GetPlayerPos();
+			CPosition pos = CGameManager::GetInst()->findUser(1)->second.GetPlayerPos();
+			sendPacket << cInput << pos;
 			sendQue.MessageQue.push(sendPacket);
 		}
 		break;
@@ -178,8 +176,15 @@ void CClient::packetSend(unsigned short _packetHeader)
 		{
 			CPacket sendPacket(P_GAMEINPUT_REQ);
 			cInput = _getch();
-			sendPacket << cInput << CGameManager::GetInst()->GetUserPool().find(1)->second.GetPlayerPos();
+			CPosition pos = CGameManager::GetInst()->findUser(1)->second.GetPlayerPos();
+			sendPacket << cInput << pos;
 			sendQue.MessageQue.push(sendPacket);
+		}
+		break;
+
+		case P_ENEMYPOS_ACK:
+		{
+			
 		}
 		break;
 	}
