@@ -43,5 +43,7 @@ private:
 	CMessageQue recvQue;
 	CMessageQue sendQue;
 
+	
+	std::string cInput;
 };
 

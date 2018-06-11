@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="InGame">
+      <UniqueIdentifier>{0afeaa13-40c5-441f-b2b9-cdf72bb42193}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -33,6 +36,18 @@
     <ClInclude Include="MessageQue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Stage.h">
+      <Filter>InGame</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUser.h">
+      <Filter>InGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Bomb.h">
+      <Filter>InGame</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>InGame</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -49,6 +64,18 @@
     </ClCompile>
     <ClCompile Include="MessageQue.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage.cpp">
+      <Filter>InGame</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUser.cpp">
+      <Filter>InGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Bomb.cpp">
+      <Filter>InGame</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>InGame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

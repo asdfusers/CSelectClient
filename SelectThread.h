@@ -28,7 +28,10 @@ public:
 	void onPBroadCastEnterRoom(CPacket & packet);
 	void onPReadyAck(CPacket & packet);
 	void onPReadyResultAck(CPacket & packet);
-
+	void onPGameStartAck(CPacket & packet);
+	void onPGameStart(CPacket & packet);
+	void onPGameInput(CPacket & packet);
+	
 	CS::CriticalSection cs;
 
 private:

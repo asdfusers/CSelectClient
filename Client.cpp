@@ -2,6 +2,7 @@
 #include "Client.h"
 #include "Protocol.h"
 #include "CriticalSections.h"
+#include "GameManager.h"
 #include <algorithm>
 
 using namespace std;
@@ -96,118 +97,6 @@ void CClient::Update()
 		sendQue.MessageQue.pop();
 	}
 }
-//
-//void CClient::packetParsing(CPacket packet)
-//{
-//	switch (packet.id())
-//	{
-//	case P_CONNECTIONSUCCESS_ACK:		onPConnectionSuccessAck(packet);	break;
-//	case  P_LOGINPACKET_ACK:			onPSelectLobbyOption(packet);		break;
-//	case  P_LOBBYOPTION_ACK:			onPSelectLobby(packet);				break;
-//	case  P_ENTERROOM_ACK:				onPEnterRoom(packet);				break;
-//	case  P_BROADCAST_ENTER_ROOM_ACK:   onPBroadCastEnterRoom(packet);		break;
-//	case  P_READY_ACK:					onPReadyAck(packet);				break;
-//	case  P_READYRESULT_ACK:			onPReadyResultAck(packet);			break;
-//	}
-//}
-//
-//void CClient::onPConnectionSuccessAck(CPacket & packet)
-//{
-//	system("cls");
-//	wchar_t str[127] = { 0, };
-//	packet >> str;
-//	printf("%s", str);
-//
-//	{
-//		CPacket sendPacket(P_LOGINPACKET_REQ);
-//		Login log;
-//		std::cin >> log.ID;
-//		std::cin >> log.password;
-//		sendPacket << log;
-//		sendQue.MessageQue.push(sendPacket);
-//
-//	}
-//}
-//void CClient::onPSelectLobbyOption(CPacket & packet)
-//{
-//	{
-//		system("cls");
-//		wchar_t str[127];
-//		packet >> str;
-//		printf("%s \n", str);
-//	}
-//
-//
-//	{
-//		CPacket sendPacket(P_LOBBYOPTION_REQ);
-//		int iInsert;
-//		cin >> iInsert;
-//		sendPacket << iInsert;
-//		sendQue.MessageQue.push(sendPacket);
-//	}
-//}
-//
-//
-//void CClient::onPSelectLobby(CPacket & packet)
-//{
-//	{
-//		system("cls");
-//		wchar_t str[127];
-//		packet >> str;
-//		printf("%s \n", str);
-//	}
-//	
-//
-//	{
-//		CPacket sendPacket(P_ENTERROOM_REQ);
-//		int iInput;
-//		cin >> iInput;
-//		sendPacket << iInput;
-//		sendQue.MessageQue.push(sendPacket);
-//	}
-//}
-//
-//void CClient::onPEnterRoom(CPacket & packet)
-//{
-//	{
-//		system("cls");
-//		wchar_t str[127];
-//		packet >> str;
-//		printf("%s\n", str);
-//	}
-//
-//	{
-//		CPacket sendPacket(P_BROADCAST_ENTER_ROOM_REQ);
-//		sendQue.MessageQue.push(sendPacket);
-//
-//	}
-//}
-//
-//void CClient::onPBroadCastEnterRoom(CPacket & packet)
-//{
-//	{
-//		system("cls");
-//		wchar_t str[127];
-//		packet >> str;
-//		printf("%s\n", str);
-//	}
-//
-//	{
-//		CPacket sendPacket(P_READY_REQ);
-//		sendQue.MessageQue.push(sendPacket);
-//	}
-//}
-//
-//void CClient::onPReadyResultAck(CPacket & packet)
-//{
-//	{
-//		system("cls");
-//		std::cout << std::endl;
-//		wchar_t str[127];
-//		packet >> str;
-//		printf("%s \n", str);
-//	}
-//}
 
 void CClient::packetSend(unsigned short _packetHeader)
 {
@@ -262,39 +151,38 @@ void CClient::packetSend(unsigned short _packetHeader)
 			cin >> iInput;
 			sendPacket << iInput;
 			sendQue.MessageQue.push(sendPacket);
-
-		
 		}
 		break;
-
 		case P_READYRESULT_ACK:
 		{
-			
+			CPacket sendPacket(P_GAMESTARTREADY_REQ);
+			sendQue.MessageQue.push(sendPacket);
 		}
 		break;
-
+		case P_GAMESTARTREADY_ACK:
+		{
+			CPacket sendPacket(P_GAMESTART_REQ);
+			sendQue.MessageQue.push(sendPacket);
+		}
+		break;
+		case P_GAMESTART_ACK:
+		{
+			CPacket sendPacket(P_GAMEINPUT_REQ);
+			
+			cInput = _getch();
+			sendPacket << cInput << CGameManager::GetInst()->GetUserPool().find(1)->second.GetPlayerPos();
+			sendQue.MessageQue.push(sendPacket);
+		}
+		break;
+		case P_GAMEINPUT_ACK:
+		{
+			CPacket sendPacket(P_GAMEINPUT_REQ);
+			cInput = _getch();
+			sendPacket << cInput << CGameManager::GetInst()->GetUserPool().find(1)->second.GetPlayerPos();
+			sendQue.MessageQue.push(sendPacket);
+		}
+		break;
 	}
 	recvQue.MessageQue.pop();
-
 }
-
-//void CClient::onPReadyAck(CPacket & packet)
-//{
-//	{
-//		std::cout << std::endl;
-//		wchar_t str[127];
-//		packet >> str;
-//		printf("%s \n", str);
-//	}
-//
-//	{
-//		CPacket sendPacket(P_READYRESULT_REQ);
-//		int iInput;
-//		cin >> iInput;
-//		sendPacket << iInput;
-//		sendQue.MessageQue.push(sendPacket);
-//	}
-//}
-//
-
 

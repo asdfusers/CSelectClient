@@ -1,3 +1,43 @@
-﻿  Client.cpp
+﻿  SelectThread.cpp
+c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(95): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'wchar_t *'
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(95): note: consider using '%ls' in the format string
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(95): note: consider using '%lls' in the format string
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(95): note: consider using '%Ls' in the format string
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(95): note: consider using '%ws' in the format string
+c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(103): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'wchar_t *'
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(103): note: consider using '%ls' in the format string
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(103): note: consider using '%lls' in the format string
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(103): note: consider using '%Ls' in the format string
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(103): note: consider using '%ws' in the format string
+c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(114): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'wchar_t *'
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(114): note: consider using '%ls' in the format string
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(114): note: consider using '%lls' in the format string
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(114): note: consider using '%Ls' in the format string
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(114): note: consider using '%ws' in the format string
+c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(124): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'wchar_t *'
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(124): note: consider using '%ls' in the format string
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(124): note: consider using '%lls' in the format string
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(124): note: consider using '%Ls' in the format string
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(124): note: consider using '%ws' in the format string
+c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(134): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'wchar_t *'
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(134): note: consider using '%ls' in the format string
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(134): note: consider using '%lls' in the format string
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(134): note: consider using '%Ls' in the format string
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(134): note: consider using '%ws' in the format string
+c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(144): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'wchar_t *'
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(144): note: consider using '%ls' in the format string
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(144): note: consider using '%lls' in the format string
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(144): note: consider using '%Ls' in the format string
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(144): note: consider using '%ws' in the format string
+c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(154): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'wchar_t *'
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(154): note: consider using '%ls' in the format string
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(154): note: consider using '%lls' in the format string
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(154): note: consider using '%Ls' in the format string
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(154): note: consider using '%ws' in the format string
+c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(165): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'wchar_t *'
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(165): note: consider using '%ls' in the format string
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(165): note: consider using '%lls' in the format string
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(165): note: consider using '%Ls' in the format string
+  c:\users\gc\documents\visual studio 2015\projects\cselectclient\selectthread.cpp(165): note: consider using '%ws' in the format string
   CSelectClient.vcxproj -> C:\Users\GC\Documents\Visual Studio 2015\Projects\CSelectClient\Debug\CSelectClient.exe
   CSelectClient.vcxproj -> C:\Users\GC\Documents\Visual Studio 2015\Projects\CSelectClient\Debug\CSelectClient.pdb (Full PDB)

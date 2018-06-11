@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "SelectThread.h"
 #include "CriticalSections.h"
-
+#include "GameUser.h"
+#include "GameManager.h"
+#include "Stage.h"
 CSelectThread::CSelectThread() : recvEvent(INVALID_HANDLE_VALUE), receivePacketSize(0)
 {
 	recvEvent = WSACreateEvent();
@@ -78,10 +80,11 @@ void CSelectThread::packetParsing(CPacket packet)
 	case  P_BROADCAST_ENTER_ROOM_ACK:   onPBroadCastEnterRoom(packet);		break;
 	case  P_READY_ACK:					onPReadyAck(packet);				break;
 	case  P_READYRESULT_ACK:			onPReadyResultAck(packet);			break;
+	case  P_GAMESTARTREADY_ACK:			onPGameStartAck(packet);			break;
+	case  P_GAMESTART_ACK:				onPGameStart(packet);				break;
+	case  P_GAMEINPUT_ACK:				onPGameInput(packet);				break;
 
 	}
-
-
 }
 
 void CSelectThread::onPConnectionSuccessAck(CPacket & packet)
@@ -90,16 +93,6 @@ void CSelectThread::onPConnectionSuccessAck(CPacket & packet)
 	wchar_t str[127] = { 0, };
 	packet >> str;
 	printf("%s", str);
-
-	{
-		/*CPacket sendPacket(P_LOGINPACKET_REQ);
-		Login log;
-		std::cin >> log.ID;
-		std::cin >> log.password;
-		sendPacket << log;
-		sendQue.MessageQue.push(sendPacket);*/
-
-	}
 }
 void CSelectThread::onPSelectLobbyOption(CPacket & packet)
 {
@@ -108,15 +101,6 @@ void CSelectThread::onPSelectLobbyOption(CPacket & packet)
 		wchar_t str[127];
 		packet >> str;
 		printf("%s \n", str);
-	}
-
-
-	{
-		/*CPacket sendPacket(P_LOBBYOPTION_REQ);
-		int iInsert;
-		std::cin >> iInsert;
-		sendPacket << iInsert;
-		sendQue.MessageQue.push(sendPacket);*/
 	}
 }
 
@@ -129,15 +113,6 @@ void CSelectThread::onPSelectLobby(CPacket & packet)
 		packet >> str;
 		printf("%s \n", str);
 	}
-
-
-	{
-		/*CPacket sendPacket(P_ENTERROOM_REQ);
-		int iInput;
-		std::cin >> iInput;
-		sendPacket << iInput;
-		sendQue.MessageQue.push(sendPacket);*/
-	}
 }
 
 void CSelectThread::onPEnterRoom(CPacket & packet)
@@ -148,12 +123,6 @@ void CSelectThread::onPEnterRoom(CPacket & packet)
 		packet >> str;
 		printf("%s\n", str);
 	}
-
-	{
-		/*CPacket sendPacket(P_BROADCAST_ENTER_ROOM_REQ);
-		sendQue.MessageQue.push(sendPacket);*/
-
-	}
 }
 
 void CSelectThread::onPBroadCastEnterRoom(CPacket & packet)
@@ -163,11 +132,6 @@ void CSelectThread::onPBroadCastEnterRoom(CPacket & packet)
 		wchar_t str[127];
 		packet >> str;
 		printf("%s\n", str);
-	}
-
-	{
-		/*CPacket sendPacket(P_READY_REQ);
-		sendQue.MessageQue.push(sendPacket);*/
 	}
 }
 
@@ -191,11 +155,99 @@ void CSelectThread::onPReadyAck(CPacket & packet)
 	
 	}
 
+}
+void CSelectThread::onPGameStartAck(CPacket & packet)
+{
 	{
-		/*CPacket sendPacket(P_READYRESULT_REQ);
-		int iInput;
-		std::cin >> iInput;
-		sendPacket << iInput;
-		sendQue.MessageQue.push(sendPacket);*/
+		system("cls");
+		wchar_t str[127];
+		packet >> str;
+		printf("%s\n", str);
 	}
+}
+
+void CSelectThread::onPGameStart(CPacket & packet)
+{
+	{
+		int iTeam;
+		packet >> iTeam;
+
+		if (!CGameManager::GetInst()->Init())
+			return;
+		if (iTeam == 1)
+		{
+			CGameUser Player(0, 0);
+			CGameUser EnemyPlayer(19, 19);
+			Player.setIteam(1);
+			CGameManager::GetInst()->insertPool(1, Player);
+			CGameManager::GetInst()->insertPool(2, EnemyPlayer);
+		}
+		else if (iTeam == 2)
+		{
+			CGameUser Player(19, 19);
+			CGameUser EnemyPlayer(0, 0);
+			Player.setIteam(2);
+			CGameManager::GetInst()->insertPool(1, Player);
+			CGameManager::GetInst()->insertPool(2, EnemyPlayer);
+		}
+		system("cls");
+		CGameManager::GetInst()->getStage()->Render(CGameManager::GetInst()->getStage()->m_Stage, &CGameManager::GetInst()->GetUserPool().find(1)->second, &CGameManager::GetInst()->GetUserPool().find(2)->second);
+	}
+}
+
+void CSelectThread::onPGameInput(CPacket & packet)
+{
+	if (CGameManager::GetInst()->GetUserPool().find(1)->second.getIteam() == 1)
+	{
+		bool bAbleCheck;
+		wchar_t cInput[5];
+		packet >> bAbleCheck >> cInput;
+
+		//변환 과정
+		char* pStr;
+		int strSize = WideCharToMultiByte(CP_ACP, 0, cInput, -1, NULL, 0, NULL, NULL);
+		pStr = new char[strSize];
+		WideCharToMultiByte(CP_ACP, 0, cInput, -1, pStr, strSize, 0, 0);
+
+		std::string asdf;
+		for (int i = 0; i < sizeof(pStr); i++)
+		{
+			asdf += pStr[i];
+		}
+		char keyInput = asdf[0];
+
+		if (bAbleCheck)
+		{
+			CGameManager::GetInst()->GetUserPool().find(1)->second.MovePlayer(CGameManager::GetInst()->getStage()->m_Stage, CGameManager::GetInst()->GetUserPool().find(1)->second, keyInput);
+			system("cls");
+			CGameManager::GetInst()->getStage()->Render(CGameManager::GetInst()->getStage()->m_Stage, &CGameManager::GetInst()->GetUserPool().find(1)->second, &CGameManager::GetInst()->GetUserPool().find(2)->second);
+		}
+	}
+	else
+	{
+		bool bAbleCheck;
+		wchar_t cInput[5];
+		packet >> bAbleCheck >> cInput;
+
+		//변환 과정
+		char* pStr;
+		int strSize = WideCharToMultiByte(CP_ACP, 0, cInput, -1, NULL, 0, NULL, NULL);
+		pStr = new char[strSize];
+		WideCharToMultiByte(CP_ACP, 0, cInput, -1, pStr, strSize, 0, 0);
+
+		std::string asdf;
+		for (int i = 0; i < sizeof(pStr); i++)
+		{
+			asdf += pStr[i];
+		}
+		char keyInput = asdf[0];
+
+		if (bAbleCheck)
+		{
+			CGameManager::GetInst()->GetUserPool().find(2)->second.MovePlayer(CGameManager::GetInst()->getStage()->m_Stage, CGameManager::GetInst()->GetUserPool().find(2)->second, keyInput);
+			system("cls");
+			CGameManager::GetInst()->getStage()->Render(CGameManager::GetInst()->getStage()->m_Stage, &CGameManager::GetInst()->GetUserPool().find(1)->second, &CGameManager::GetInst()->GetUserPool().find(2)->second);
+		}
+	}
+
 }
