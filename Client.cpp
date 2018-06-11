@@ -54,12 +54,12 @@ bool CClient::Connect()
 	return true;
 }
 	
-//void CClient::CopyMessageQue()
-//{
-//	CCriticalSectionLock cs(_SelectThread.cs);
-//	recvQue.MessageQue.push(_SelectThread.recvQue.MessageQue.front());
-//	_SelectThread.recvQue.MessageQue.pop();
-//}
+void CClient::CopyMessageQue()
+{
+	CCriticalSectionLock cs(_SelectThread.cs);
+	recvQue.MessageQue.push(_SelectThread.recvQue.MessageQue.front());
+	_SelectThread.recvQue.MessageQue.pop();
+}
 
 void CClient::CopyMessageSendQue()
 {
@@ -78,17 +78,15 @@ bool CClient::sendMessage(CPacket packet)
 void CClient::Update()
 {
 	
-	//if (!_SelectThread.recvQue.MessageQue.empty())
-	//{
-	//	CopyMessageQue();
-	//	packetParsing(recvQue.MessageQue.front());
-	//	recvQue.MessageQue.pop();
-	//}
 	CCriticalSectionLock cs(cs);
 
 	if (!_SelectThread.recvQue.MessageQue.empty())
 	{
-		packetSend(_SelectThread.recvQue.MessageQue.front().id());
+		CopyMessageQue();
+	}
+	if (!recvQue.MessageQue.empty())
+	{
+		packetSend(recvQue.MessageQue.front().id());
 	}
 
 	if (!sendQue.MessageQue.empty())
@@ -213,8 +211,7 @@ void CClient::Update()
 
 void CClient::packetSend(unsigned short _packetHeader)
 {
-	CCriticalSectionLock cs(_SelectThread.cs);
-	Sleep(1);
+	
 	switch (_packetHeader)
 	{
 		case P_CONNECTIONSUCCESS_ACK:
@@ -277,7 +274,7 @@ void CClient::packetSend(unsigned short _packetHeader)
 		break;
 
 	}
-		_SelectThread.recvQue.MessageQue.pop();
+	recvQue.MessageQue.pop();
 
 }
 

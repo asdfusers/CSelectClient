@@ -13,7 +13,7 @@ public:
 
 	bool Init(std::string IP, int PORT);
 	bool Connect();
-	//void CopyMessageQue();
+	void CopyMessageQue();
 	void CopyMessageSendQue();
 	CSelectThread _SelectThread;
 	CS::CriticalSection cs;
@@ -34,6 +34,7 @@ public:
 
 	unsigned short packetHeader;
 	void packetSend(unsigned short _packetHeader);
+
 private:
 	SOCKET mSocket;
 	SOCKADDR_IN addr;
