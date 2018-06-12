@@ -52,7 +52,7 @@ bool CSelectThread::onReceive()
 			char buffer[PACKETBUFFERSIZE];
 			
 			CCriticalSectionLock cs(cs);
-			if (receivedPacket.id() == P_ENEMYPOS_ACK)
+			if (receivedPacket.id() == P_ENEMYPOS_ACK || receivedPacket.id() == P_BROADCAST_READY_ACK)
 			{
 				GameRecvQue.MessageQue.push(receivedPacket);
 				packetParsing(GameRecvQue.MessageQue.front());
@@ -87,6 +87,7 @@ void CSelectThread::packetParsing(CPacket packet)
 	case  P_LOBBYOPTION_ACK:			onPSelectLobby(packet);				break;
 	case  P_ENTERROOM_ACK:				onPEnterRoom(packet);				break;
 	case  P_BROADCAST_ENTER_ROOM_ACK:   onPBroadCastEnterRoom(packet);		break;
+	case  P_BROADCAST_READY_ACK:		onPBroadCastReadyRoom(packet);		break;
 	case  P_READY_ACK:					onPReadyAck(packet);				break;
 	case  P_READYRESULT_ACK:			onPReadyResultAck(packet);			break;
 	case  P_GAMESTARTREADY_ACK:			onPGameStartAck(packet);			break;
@@ -101,8 +102,9 @@ void CSelectThread::onPConnectionSuccessAck(CPacket & packet)
 	system("cls");
 	wchar_t str[127] = { 0, };
 	packet >> str;
-	printf("%s", str);
+	printf("%s \n", str);
 }
+
 void CSelectThread::onPSelectLobbyOption(CPacket & packet)
 {
 	{
@@ -135,6 +137,16 @@ void CSelectThread::onPEnterRoom(CPacket & packet)
 }
 
 void CSelectThread::onPBroadCastEnterRoom(CPacket & packet)
+{
+	{
+		system("cls");
+		wchar_t str[127];
+		packet >> str;
+		printf("%s\n", str);
+	}
+}
+
+void CSelectThread::onPBroadCastReadyRoom(CPacket & packet)
 {
 	{
 		system("cls");

@@ -27,6 +27,7 @@ public:
 	void onPSelectLobby(CPacket & packet);
 	void onPEnterRoom(CPacket & packet);
 	void onPBroadCastEnterRoom(CPacket & packet);
+	void onPBroadCastReadyRoom(CPacket & packet);
 	void onPReadyAck(CPacket & packet);
 	void onPReadyResultAck(CPacket & packet);
 	void onPGameStartAck(CPacket & packet);
