@@ -21,19 +21,7 @@ public:
 	CMessageQue recvQue;
 	CMessageQue sendQue;
 	
-	void packetParsing(CPacket packet);
-	void onPConnectionSuccessAck(CPacket & packet);
-	void onPSelectLobbyOption(CPacket & packet);
-	void onPSelectLobby(CPacket & packet);
-	void onPEnterRoom(CPacket & packet);
-	void onPBroadCastEnterRoom(CPacket & packet);
-	void onPBroadCastReadyRoom(CPacket & packet);
-	void onPReadyAck(CPacket & packet);
-	void onPReadyResultAck(CPacket & packet);
-	void onPGameStartAck(CPacket & packet);
-	void onPGameStart(CPacket & packet);
-	void onPGameInput(CPacket & packet);
-	void onPEnemyPos(CPacket & packet);
+
 	CS::CriticalSection cs;
 
 private:

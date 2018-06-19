@@ -152,9 +152,12 @@
   <ItemGroup>
     <ClInclude Include="Bomb.h" />
     <ClInclude Include="Client.h" />
+    <ClInclude Include="DlgBox.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameUser.h" />
+    <ClInclude Include="KeyInput.h" />
     <ClInclude Include="MessageQue.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="SelectThread.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="stdafx.h" />
@@ -164,8 +167,10 @@
     <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="CSelectClient.cpp" />
+    <ClCompile Include="DlgBox.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameUser.cpp" />
+    <ClCompile Include="KeyInput.cpp" />
     <ClCompile Include="MessageQue.cpp" />
     <ClCompile Include="SelectThread.cpp" />
     <ClCompile Include="Stage.cpp" />
@@ -183,6 +188,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="CSelectClient.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

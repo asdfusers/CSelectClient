@@ -20,6 +20,9 @@ int main()
 	while (1)
 	{
 		Client.Update();
+		Client.Print();
+		if (Client.bGame)
+			Client.Render();
 		Sleep(1);
 	}
 
