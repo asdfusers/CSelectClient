@@ -96,7 +96,7 @@ void CClient::Update()
 	}
 	if (Input.keyInput())
 	{
-		if (packetHeader == P_GAMEINPUT_ACK || packetHeader == P_ENEMYPOS_ACK)
+		if (packetHeader == P_GAMEINPUT_ACK || packetHeader == P_ENEMYPOS_ACK || packetHeader == P_GAMESTART_ACK)
 		{
 			CPacket sendPacket(P_GAMEINPUT_REQ);
 			CPosition pos = CGameManager::GetInst()->findUser(1)->second.GetPlayerPos();
@@ -104,11 +104,14 @@ void CClient::Update()
 			sendQue.MessageQue.push(sendPacket);
 
 		}
-		else 
+		else
 		{
-			CPacket sendPacket(packetHeader + 1);
-			sendPacket << Input.getKey();
-			sendQue.MessageQue.push(sendPacket);
+			if (packetHeader != P_MATCHING_ACK)
+			{
+				CPacket sendPacket(packetHeader + 1);
+				sendPacket << Input.getKey();
+				sendQue.MessageQue.push(sendPacket);
+			}
 		}
 
 	}
@@ -125,7 +128,7 @@ void CClient::Print()
 	{
 		if (!bGame)
 		{
-			system("cls");
+		system("cls");
 		}
 		printf("%s", printQue.front());
 		printQue.pop();
@@ -136,6 +139,7 @@ void CClient::Render()
 {
 	system("cls");
 	CGameManager::GetInst()->getStage()->Render(CGameManager::GetInst()->getStage()->m_Stage, &CGameManager::GetInst()->GetUserPool().find(1)->second, &CGameManager::GetInst()->GetUserPool().find(2)->second);
+	Sleep(5);
 }
 
 void CClient::packetParsing(CPacket packet)
@@ -146,6 +150,7 @@ void CClient::packetParsing(CPacket packet)
 	case  P_LOGINPACKET_ACK:			onPSelectLobbyOption(packet);		break;
 	case  P_LOBBYOPTION_ACK:			onPSelectLobby(packet);				break;
 	case  P_ENTERROOM_ACK:				onPEnterRoom(packet);				break;
+	case  P_MATCHING_ACK:				onPMatching(packet);				break;
 	case  P_READYRESULT_ACK:			onPReadyResultAck(packet);			break;
 	case  P_GAMESTARTREADY_ACK:			onPGameStartAck(packet);			break;
 	case  P_GAMESTART_ACK:				onPGameStart(packet);				break;
@@ -165,7 +170,7 @@ void CClient::onPConnectionSuccessAck(CPacket & packet)
 	
 	wcscpy_s(log.ID, dlgBox.getLog().ID);
 	wcscpy_s(log.password, dlgBox.getLog().password);
-	
+
 	CPacket sendPacket(P_LOGINPACKET_REQ);
 	sendPacket << log;
 	sendQue.MessageQue.push(sendPacket);
@@ -316,6 +321,12 @@ void CClient::onPEnemyPos(CPacket & packet)
 	}
 
 
+}
+
+void CClient::onPMatching(CPacket & packet)
+{
+	packet >> Buffer;
+	printQue.push(Buffer);
 }
 
 

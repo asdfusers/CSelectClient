@@ -37,7 +37,7 @@ public:
 	void onPGameStart(CPacket & packet);
 	void onPGameInput(CPacket & packet);
 	void onPEnemyPos(CPacket & packet);
-
+	void onPMatching(CPacket & packet);
 
 	
 

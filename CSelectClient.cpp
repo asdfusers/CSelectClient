@@ -24,6 +24,7 @@ int main()
 		if (Client.bGame)
 			Client.Render();
 		Sleep(1);
+		XTrace(L"%d", Client.bGame);
 	}
 
     return 0;
